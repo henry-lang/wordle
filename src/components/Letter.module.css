@@ -1,0 +1,9 @@
+.letter {
+    border: 4px solid var(--light-color);
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+    width: 60px;
+}
