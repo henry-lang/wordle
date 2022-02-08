@@ -15,5 +15,5 @@ type LetterProps =
       }
 
 export function Letter({word, index, color}: LetterProps) {
-    return <span className={styles.letter}>{word?.at(index) || ''}</span>
+    return <span className={styles.letter}>{word?.at(index).toUpperCase() || ''}</span>
 }

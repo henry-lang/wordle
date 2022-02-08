@@ -22,17 +22,19 @@ export default function Wordle(): JSX.Element {
     const [guesses, setGuesses] = useState<string[][]>([])
     const [guess, setGuess] = useState<string[]>([])
     const word = useWord()
+    console.log(word)
 
     const onKeyPress = useCallback(
         ({key}: KeyboardEvent) => {
             const isFinished = guess.length >= 5
             const isBackspace = key === 'Backspace'
             const isEnter = key === 'Enter'
-            const isLetter = /^[a-z]$/.test(key)
+            const isLetter = /^[a-zA-Z]$/.test(key)
+            console.log(key)
 
             if (isBackspace) {
                 setGuess((prevGuess) => {
-                    const newGuess = [...prevGuess, key]
+                    const newGuess = [...prevGuess]
                     newGuess.pop()
                     return newGuess
                 })
@@ -47,21 +49,24 @@ export default function Wordle(): JSX.Element {
     )
 
     useEffect(() => {
-        window.addEventListener('keypress', onKeyPress)
+        window.addEventListener('keydown', onKeyPress)
         return () => {
-            window.removeEventListener('keypress', onKeyPress)
+            window.removeEventListener('keydown', onKeyPress)
         }
     }, [onKeyPress])
 
     return (
         <div className={styles.wordle}>
-            {guesses.map((guess, i) => (
-                <Guess guess={guess} key={i} />
-            ))}
-            <CurrentGuess guess={guess} />
-            {Array.from({length: numGuesses - guesses.length - 1}).map((_, i) => (
-                <EmptyGuess key={i} />
-            ))}
+            <h1 className={styles.title}>WORDLE</h1>
+            <div className={styles.board}>
+                {guesses.map((guess, i) => (
+                    <Guess guess={guess} key={i} />
+                ))}
+                <CurrentGuess guess={guess} />
+                {Array.from({length: numGuesses - guesses.length - 1}).map((_, i) => (
+                    <EmptyGuess key={i} />
+                ))}
+            </div>
         </div>
     )
 }

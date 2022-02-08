@@ -1,2 +1,4 @@
 .guess {
+    display: flex;
+    justify-content: center;
 }

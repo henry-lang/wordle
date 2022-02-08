@@ -4,4 +4,16 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    flex-grow: 1;
+}
+
+.title {
+    font-family: var(--main-font);
+    font-size: 3rem;
+    color: var(--light-color);
+}
+
+.board {
+    position: relative;
+    margin-bottom: 100px;
 }
