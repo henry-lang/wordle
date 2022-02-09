@@ -3,12 +3,15 @@
     font-style: normal;
     font-weight: 400;
 
-    src: url('../res/fonts/Nunito-Medium.ttf') format('truetype')
+    src: url('../res/fonts/Nunito-Medium.ttf') format('truetype');
 }
 
 :root {
     --dark-color: #333;
     --light-color: #ddd;
+    --absent-color: #222;
+    --present-color: #bba733;
+    --correct-color: #4f8331;
 
     --main-font: 'Nunito';
 }

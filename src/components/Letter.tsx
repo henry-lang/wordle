@@ -2,18 +2,28 @@ import React from 'react'
 
 import styles from './Letter.module.css'
 
-type LetterProps =
-    | {
-          word: string[]
-          index: number
-          color?: boolean
-      }
-    | {
-          word?: undefined
-          index?: never
-          color?: never
-      }
+export enum LetterStatus {
+    None,
+    Absent,
+    Present,
+    Correct,
+}
 
-export function Letter({word, index, color}: LetterProps) {
-    return <span className={styles.letter}>{word?.at(index).toUpperCase() || ''}</span>
+interface LetterProps {
+    letter: string
+    status: LetterStatus
+}
+
+export function Letter({letter, status}: LetterProps): JSX.Element {
+    return (
+        <span
+            className={`${styles.letter} ${
+                status == LetterStatus.Absent ? styles.absent : ''
+            } ${status == LetterStatus.Present ? styles.present : ''} ${
+                status == LetterStatus.Correct ? styles.correct : ''
+            }`}
+        >
+            {letter.toUpperCase() || ''}
+        </span>
+    )
 }

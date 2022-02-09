@@ -10,3 +10,15 @@
     height: 4rem;
     width: 4rem;
 }
+
+.absent {
+    background-color: var(--absent-color);
+}
+
+.present {
+    background-color: var(--present-color);
+}
+
+.correct {
+    background-color: var(--correct-color);
+}
