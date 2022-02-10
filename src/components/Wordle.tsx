@@ -7,7 +7,7 @@ import styles from './Wordle.module.css'
 export const wordLength = 5
 const numGuesses = 6
 
-function useLetterCounts(word: string): Record<string, number> {
+function useLetterCounts(word: string) {
     return useMemo(
         () =>
             word.split('').reduce<Record<string, number>>((counts, letter) => {
@@ -41,13 +41,17 @@ export default function Wordle(): JSX.Element {
     const word = useWord()
     const counts = useLetterCounts(word)
 
+    const isWin =
+        guesses.length > 0 && guesses[guesses.length - 1].join('') === word
+    const isLose = !isWin && guesses.length === numGuesses
+
     const onKeyPress = useCallback(
         ({key}: KeyboardEvent) => {
+            if (isWin || isLose) return
             const isFinished = guess.length >= 5
             const isBackspace = key === 'Backspace'
             const isEnter = key === 'Enter'
             const isLetter = /^[a-zA-Z]$/.test(key)
-            console.log(key)
 
             if (isBackspace) {
                 setGuess((prevGuess) => {
@@ -75,16 +79,18 @@ export default function Wordle(): JSX.Element {
     return (
         <div className={styles.wordle}>
             <h1 className={styles.title}>WORDLE</h1>
+            {isWin ? <h3 className={styles.gameStatus}>Nice job!</h3> : ''}
+            {isLose ? <h3 className={styles.gameStatus}>Too bad.</h3> : ''}
             <div className={styles.board}>
                 {guesses.map((guess, i) => (
-                    <Guess {...{guess, counts}} key={i} />
+                    <Guess {...{guess, word, counts}} key={i} />
                 ))}
-                <CurrentGuess guess={guess} />
-                {Array.from({length: numGuesses - guesses.length - 1}).map(
-                    (_, i) => (
-                        <EmptyGuess key={i} />
-                    )
-                )}
+                {isWin || isLose ? '' : <CurrentGuess guess={guess} />}
+                {Array.from({
+                    length: numGuesses - guesses.length - 1,
+                }).map((_, i) => (
+                    <EmptyGuess key={i} />
+                ))}
             </div>
         </div>
     )

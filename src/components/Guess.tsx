@@ -1,36 +1,54 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 
 import {wordLength} from './Wordle'
 import {Letter, LetterStatus} from './Letter'
 import styles from './Guess.module.css'
 
-interface GuessProps {
-    guess: string[]
+function useCheckLetters({guess, word, counts}: GuessProps) {
+    return useMemo(() => {
+        const extras = {...counts}
+        guess.forEach((letter, i) => {
+            if (word[i] === letter) {
+                extras[letter]--
+            }
+        })
+
+        return guess.map((letter, i) => {
+            if (word[i] === letter) return LetterStatus.Correct
+            if (extras[letter]) return LetterStatus.Present
+            return LetterStatus.Absent
+        })
+    }, [guess])
 }
 
-export function Guess({
-    guess,
-    counts,
-}: GuessProps & {counts: Record<string, number>}): JSX.Element {
+interface GuessProps {
+    guess: string[]
+    word: string
+    counts: Record<string, number>
+}
+
+export function Guess({guess, word, counts}: GuessProps): JSX.Element {
+    const statuses = useCheckLetters({guess, word, counts})
+
     return (
         <div className={styles.guess}>
-            {guess.map((_, i) => (
-                <Letter
-                    letter={guess.at(i)}
-                    status={LetterStatus.Absent}
-                    key={i}
-                />
+            {statuses.map((status, i) => (
+                <Letter letter={guess[i]} status={status} key={i} />
             ))}
         </div>
     )
 }
 
-export function CurrentGuess({guess}: GuessProps): JSX.Element {
+interface CurrentGuessProps {
+    guess: string[]
+}
+
+export function CurrentGuess({guess}: CurrentGuessProps): JSX.Element {
     return (
         <div className={styles.guess}>
             {guess.map((_, i) => (
                 <Letter
-                    letter={guess.at(i)}
+                    letter={guess[i]}
                     status={LetterStatus.None}
                     key={i}
                 ></Letter>

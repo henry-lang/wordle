@@ -4,12 +4,21 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    flex-grow: 1;
 }
 
 .title {
     font-family: var(--main-font);
     font-size: 3rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    color: var(--light-color);
+}
+
+.gameStatus {
+    font-family: var(--main-font);
+    font-size: 2rem;
+    margin-top: 0.75rem;
+    margin-bottom: 1.75rem;
     color: var(--light-color);
 }
 
